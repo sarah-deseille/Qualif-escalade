@@ -1,11 +1,23 @@
 #!/usr/bin/bash
-#définissions des var. globales
+#déf. des var. globales
 DIR_PATH="." #stockage des fichiers à produire
 SEPARATOR=":" #séparateur
 
+#déf. fonctions
+
+
+
+
 # gestion des options avec getopts
-while getopts "d:f:h" opt; do
+while getopts "d:f:hc:" opt; do
     case $opt in
+    #traiter chaque catégorie passer en paramètres
+    c) #echo "${@:2}" #2 -> commence par le deuxième arg (après le -c)
+        for i in "${@:2}"
+        do
+            echo $i
+        done
+        ;;
     #indique répertoire de stockage des fichiers à produire
     d)
         DIR_PATH=$OPTARG
@@ -35,3 +47,4 @@ HERE
     ;;
     esac
 done
+
