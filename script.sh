@@ -3,11 +3,6 @@
 DIR_PATH="." #stockage des fichiers à produire
 SEPARATOR=":" #séparateur
 
-#déf. fonctions
-
-
-
-
 # gestion des options avec getopts
 while getopts "d:f:hc:" opt; do
     case $opt in
