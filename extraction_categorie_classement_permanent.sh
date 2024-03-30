@@ -2,7 +2,8 @@
 #déf. des var. globales
 DIR_PATH="." #stockage des fichiers à produire
 SEPARATOR=":" #séparateur
-U16F="FEMME_U16"
+#U16F="FEMME_U16"
+CATEGORIE_ACTUELLE=""
 
 #def. fonctions
 
@@ -88,6 +89,36 @@ while getopts "d:f:hc:" opt; do
         for i in "${@:2}"
         do
             echo $i
+            #switch case pour traiter chaque catégorie
+            case $i in
+                "u16f")
+                    echo "FEMME_U16"
+                    CATEGORIE_ACTUELLE="FEMME_U16"
+                    ;;
+                "FEMME_U18")
+                    echo "FEMME_U18"
+                    CATEGORIE_ACTUELLE="FEMME_U18"
+                    ;;
+                "FEMME_U20")
+                    echo "FEMME_U20"
+                    CATEGORIE_ACTUELLE="FEMME_U20"
+                    ;;
+                "HOMME_U16")
+                    echo "HOMME_U16"
+                    CATEGORIE_ACTUELLE="HOMME_U16"
+                    ;;
+                "HOMME_U18")
+                    echo "HOMME_U18"
+                    CATEGORIE_ACTUELLE="HOMME_U18"
+                    ;;
+                "HOMME_U20")
+                    echo "HOMME_U20"
+                    CATEGORIE_ACTUELLE="HOMME_U20"
+                    ;;
+                *)
+                    echo "catégorie non reconnue"
+                    ;;
+            esac
         done
         ;;
     #indique répertoire de stockage des fichiers à produire
