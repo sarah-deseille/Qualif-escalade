@@ -13,7 +13,7 @@ U16F="FEMME_U16"
 function find_category {
     local category=$1
     local file=$2
-    local found=1
+    local categorie_found=1
 
     OLDIFS=$IFS #sauvegarde de la valeur de IFS, IFS = Internal Field Separator (variable interne)
     IFS=$'\n' #IFS est un caractère de séparation interne
@@ -22,13 +22,13 @@ function find_category {
     do
         if grep -q "$category" <<< $ligne # <<< permet de dire à grep de parcourir ligne par ligne.
         then
-            found=0
+            categorie_found=0
             break
         fi
     done < $file
     
     IFS=$OLDIFS #restauration de la valeur de IFS
-    return $found
+    return $categorie_found
 }
 
 
@@ -36,7 +36,8 @@ function find_category {
 function extract_category_record {
     local category=$1
     local file=$2
-    local found=1
+    local categorie_found=1
+    local tbody_found=1 #drapeau pour commencer à chercher tbody
 
     OLDIFS=$IFS #sauvegarde de la valeur de IFS, IFS = Internal Field Separator (variable interne)
     IFS=$'\n' #IFS est un caractère de séparation interne
@@ -45,14 +46,38 @@ function extract_category_record {
     do
         if grep -q "id=\"$category" <<< $ligne # <<< permet de dire à grep de parcourir ligne par ligne.
         then
-            found=0
+            categorie_found=0
             #si je trouve, j'affiche la ligne
-            echo $ligne
+            #echo $ligne
+            echo "catégorie trouvée"
+        fi
+
+        if [ "$categorie_found" -eq 0 ] 
+        then
+            if grep -q '<tbody>' <<< $ligne # trouver tbody -> enregistrement de la catégorie
+            then
+                tbody_found=0 #j'ai trouvé tbody
+                echo "tbody trouvé"
+            fi
+        fi
+
+        #les deux conditions sont présentes : cat trouvé et tbodu trouvé
+        if [[ $categorie_found -eq 0 ]] && [[ $tbody_found -eq 0 ]]
+        then
+            if grep -q '</tbody>' <<< $ligne # trouver tbody -> enregistrement de la catégorie
+            then
+                categorie_found=1
+                tbody_found=1
+                echo "fin de tbody trouvé"
+                break
+            else
+                echo "$ligne" >> U16F.txt
+            fi
         fi
     done < $file
     
     IFS=$OLDIFS #restauration de la valeur de IFS
-    return $found
+    return $categorie_found
 }
 
 # gestion des options avec getopts
