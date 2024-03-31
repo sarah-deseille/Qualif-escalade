@@ -73,7 +73,7 @@ function extract_category_record {
                 echo "fin de tbody trouvé"
                 break
             else
-                echo "$ligne" >> "$NOM_CATEGORIE"_france.txt
+                echo "$ligne" >> "$DIR_PATH/$NOM_CATEGORIE"_france.txt
             fi
         fi
     done < $file
