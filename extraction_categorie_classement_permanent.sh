@@ -5,6 +5,7 @@ SEPARATOR=":" #séparateur
 #U16F="FEMME_U16"
 CATEGORIE_ACTUELLE=""
 NOM_CATEGORIE="" #nom voulu pour le fichier de sortie
+FILE_PATH="ascii/classement_permanent" #fic de données par défaut
 
 #def. fonctions
 
@@ -166,4 +167,4 @@ done
 #     echo "cat1 non trouvée"
 # fi
 
-extract_category_record "$CATEGORIE_ACTUELLE" "ascii/classement_permanent"
+extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
