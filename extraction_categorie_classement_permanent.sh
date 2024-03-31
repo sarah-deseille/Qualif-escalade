@@ -4,6 +4,7 @@ DIR_PATH="." #stockage des fichiers à produire
 SEPARATOR=":" #séparateur
 #U16F="FEMME_U16"
 CATEGORIE_ACTUELLE=""
+NOM_CATEGORIE="" #nom voulu pour le fichier de sortie
 
 #def. fonctions
 
@@ -72,7 +73,7 @@ function extract_category_record {
                 echo "fin de tbody trouvé"
                 break
             else
-                echo "$ligne" >> U16F.txt
+                echo "$ligne" >> "$NOM_CATEGORIE"_france.txt
             fi
         fi
     done < $file
@@ -94,26 +95,32 @@ while getopts "d:f:hc:" opt; do
                 "u16f")
                     echo "FEMME_U16"
                     CATEGORIE_ACTUELLE="FEMME_U16"
+                    NOM_CATEGORIE="u16f"
                     ;;
-                "FEMME_U18")
+                "u18f")
                     echo "FEMME_U18"
                     CATEGORIE_ACTUELLE="FEMME_U18"
+                    NOM_CATEGORIE="u18f"
                     ;;
-                "FEMME_U20")
+                "u20f")
                     echo "FEMME_U20"
                     CATEGORIE_ACTUELLE="FEMME_U20"
+                    NOM_CATEGORIE="u20f"
                     ;;
-                "HOMME_U16")
+                "u16h")
                     echo "HOMME_U16"
                     CATEGORIE_ACTUELLE="HOMME_U16"
+                    NOM_CATEGORIE="u16h"
                     ;;
-                "HOMME_U18")
+                "u18h")
                     echo "HOMME_U18"
                     CATEGORIE_ACTUELLE="HOMME_U18"
+                    NOM_CATEGORIE="u18h"
                     ;;
-                "HOMME_U20")
+                "u20h")
                     echo "HOMME_U20"
                     CATEGORIE_ACTUELLE="HOMME_U20"
+                    NOM_CATEGORIE="u20h"
                     ;;
                 *)
                     echo "catégorie non reconnue"
@@ -159,4 +166,4 @@ done
 #     echo "cat1 non trouvée"
 # fi
 
-extract_category_record "$U16F" "ascii/classement_permanent"
+extract_category_record "$CATEGORIE_ACTUELLE" "ascii/classement_permanent"
