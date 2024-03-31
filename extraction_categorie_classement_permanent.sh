@@ -74,7 +74,7 @@ function extract_category_record {
                 echo "fin de tbody trouvé"
                 break
             else
-                echo "$ligne" >> "$DIR_PATH/$NOM_CATEGORIE"_france.txt
+                echo "$ligne" >> "$DIR_PATH/$NOM_CATEGORIE"_france
             fi
         fi
     done < $file
@@ -97,31 +97,37 @@ while getopts "d:f:hc:" opt; do
                     echo "FEMME_U16"
                     CATEGORIE_ACTUELLE="FEMME_U16"
                     NOM_CATEGORIE="u16f"
+                    extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
                     ;;
                 "u18f")
                     echo "FEMME_U18"
                     CATEGORIE_ACTUELLE="FEMME_U18"
                     NOM_CATEGORIE="u18f"
+                    extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
                     ;;
                 "u20f")
                     echo "FEMME_U20"
                     CATEGORIE_ACTUELLE="FEMME_U20"
                     NOM_CATEGORIE="u20f"
+                    extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
                     ;;
                 "u16h")
                     echo "HOMME_U16"
                     CATEGORIE_ACTUELLE="HOMME_U16"
                     NOM_CATEGORIE="u16h"
+                    extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
                     ;;
                 "u18h")
                     echo "HOMME_U18"
                     CATEGORIE_ACTUELLE="HOMME_U18"
                     NOM_CATEGORIE="u18h"
+                    extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
                     ;;
                 "u20h")
                     echo "HOMME_U20"
                     CATEGORIE_ACTUELLE="HOMME_U20"
                     NOM_CATEGORIE="u20h"
+                    extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
                     ;;
                 *)
                     echo "catégorie non reconnue"
@@ -166,5 +172,3 @@ done
 # else
 #     echo "cat1 non trouvée"
 # fi
-
-extract_category_record "$CATEGORIE_ACTUELLE" "$FILE_PATH"
