@@ -29,8 +29,9 @@ function get_title_file {
 #fonction : chercher dans chaque fichier la ligne dont le numéro est fourni en paramètre
 function get_line {
     local line_number=$1
+    local RECORD=""
 
-    for file in "$DIR_PATH"/*.txt
+    for file in "$DIR_PATH"/*.txt #pour tous les fics créés grâce aux awk (données pour le top10 d'une catégorie)
     do
         RECORD+="$(sed -n "$line_number"p $file):"
     done
@@ -207,4 +208,7 @@ awk -F"$SEPARATOR" '
         print zone
     }' listeLigue.txt > listeZone.txt
 
-get_line 1
+for i in $(seq 1 10)
+do
+    get_line $i
+done
