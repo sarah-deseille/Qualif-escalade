@@ -26,6 +26,17 @@ function get_title_file {
     #la deuxième partie : on dit que le délimiteur est </td>, et on lui demande d'afficher la première colonne soit le title du club de chaque ligne du fic
 }
 
+#fonction : chercher dans chaque fichier la ligne dont le numéro est fourni en paramètre
+function get_line {
+    local line_number=$1
+
+    for file in "$DIR_PATH"/*.txt
+    do
+        RECORD+="$(sed -n "$line_number"p $file):"
+    done
+    echo $RECORD
+}
+
 
 # gestion des options avec getopts
 while getopts "d:f:hc:" opt; do
@@ -196,3 +207,4 @@ awk -F"$SEPARATOR" '
         print zone
     }' listeLigue.txt > listeZone.txt
 
+get_line 1
