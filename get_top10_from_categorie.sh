@@ -45,6 +45,13 @@ function find_name {
     echo $line | awk -F"<td id=" '{print $2}' | awk -F"</a>" '{print $1}' | awk -F">" '{print $3}'
 }
 
+#fonction : recuperer la ligne correspond à un compétiteur dans le fic d'origine
+function get_line_competiteur {
+    local competiteur=$1
+    local file=$2
+    grep -E "$competiteur" $file
+}
+
 # gestion des options avec getopts
 while getopts "d:f:hc:" opt; do
     case $opt in
@@ -231,6 +238,8 @@ do
     zone=$(echo $ENREGISTREMENT | cut -d":" -f3) #zone
     nomFic="${NOM_CATEGORIE}_${zone}_prequalifiee" #var qui contient le nom du fic cible
 
+    data_competiteur=$(get_line_competiteur "$competiteur" "${NOM_CATEGORIE}_prequalifies") #récupération des données du competiteur
+
     #on vérifie que la var zone est vide
     if [ -z "$zone" ] #-z : regarde si var vide
     then
@@ -240,7 +249,7 @@ do
         then
             touch "$DIR_PATH/$nomFic" #création du fichier
         fi
-        echo "$ENREGISTREMENT" >> "$DIR_PATH/$nomFic" #enregistrement dans le fic cible
+        echo "$data_competiteur" >> "$DIR_PATH/$nomFic" #enregistrement dans le fic cible
     fi
 
 done 
