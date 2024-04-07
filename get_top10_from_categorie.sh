@@ -33,11 +33,17 @@ function get_line {
 
     for file in "$DIR_PATH"/*.txt #pour tous les fics créés grâce aux awk (données pour le top10 d'une catégorie)
     do
-        RECORD+="$(sed -n "$line_number"p $file):"
+        RECORD+="$(sed -n "$line_number"p $file):" #on concatène les donnes de chaque fic. au numéro de la ligne donnée
     done
     echo $RECORD
 }
 
+#fonction : trouver nom d'une personne 
+function find_name {
+#<tr><td>1</td><td id="P7919"><a href="https://escalade.online/resultat/palmares_594291">PUECH YAZID Louise</a></td><td>CHAMBERY ESCALADE</td><td>350.87</td><td><a href="https://escalade.online/resultat/resultat_11214#P7919">349.54</a></td><td><a href="https://escalade.online/resultat/resultat_11201#P7919">351.52</a></td><td><a href="https://escalade.online/resultat/resultat_11156#P7919">351.55</a></td></tr>
+    local line=$1
+    echo $line | awk -F"<td id=" '{print $2}' | awk -F"</a>" '{print $1}' | awk -F">" '{print $3}'
+}
 
 # gestion des options avec getopts
 while getopts "d:f:hc:" opt; do
@@ -208,7 +214,33 @@ awk -F"$SEPARATOR" '
         print zone
     }' listeLigue.txt > listeZone.txt
 
+OLDIFS=$IFS #sauvegarde de la valeur de IFS, IFS = Internal Field Separator (variable interne)
+IFS=$'\n' #IFS est un caractère de séparation interneS
+
+for ligne in $(cat "$DIR_PATH/$NOM_CATEGORIE"_prequalifies)
+do
+    find_name "$ligne" 
+done > nom.txt #redirige les noms dans un fichier
+
+IFS=$OLDIFS #restauration de la valeur de IFS
+
 for i in $(seq 1 10)
 do
-    get_line $i
-done
+    ENREGISTREMENT=$(get_line $i) #pour chacun des dix premiers de la cat select - reunis les infos
+    competiteur=$(echo $ENREGISTREMENT | cut -d":" -f4) #nom du competiteur
+    zone=$(echo $ENREGISTREMENT | cut -d":" -f3) #zone
+    nomFic="${NOM_CATEGORIE}_${zone}_prequalifiee" #var qui contient le nom du fic cible
+
+    #on vérifie que la var zone est vide
+    if [ -z "$zone" ] #-z : regarde si var vide
+    then
+        2&> echo "${competiteur} ${NOM_CATEGORIE}"
+    else
+        if [ ! -f "$DIR_PATH/$nomFic" ] # -f : si le fichier existe       ! : la négation
+        then
+            touch "$DIR_PATH/$nomFic" #création du fichier
+        fi
+        echo "$ENREGISTREMENT" >> "$DIR_PATH/$nomFic" #enregistrement dans le fic cible
+    fi
+
+done 
